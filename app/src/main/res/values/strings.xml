@@ -16,4 +16,9 @@
     <string name="action_login">登入</string>
     <string name="forget_password">忘記密碼</string>
     <string name="action_register">註冊</string>
+    <string name="phone_number">手機號碼</string>
+    <string name="verification_code">驗證碼</string>
+    <string name="get_verification_code">獲取驗證碼</string>
+    <string name="register_password">輸入密碼</string>
+    <string name="register_confirm">確認註冊</string>
 </resources>

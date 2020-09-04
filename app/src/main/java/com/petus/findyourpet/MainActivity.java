@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity{
             startActivityForResult(intent,CDictionary.REQUEST_LOGIN);
         }
 
-        ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(map_ready);
+        //((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(map_ready);
 
         InitialComponent();
 
@@ -50,10 +50,6 @@ public class MainActivity extends AppCompatActivity{
         actionBarDrawerToggle.syncState();//初始化狀態
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
     }
-
-
-    static final LatLng map = new LatLng(25.041350, 121.566357);
-    private GoogleMap mMap;
 
     private NavigationView.OnNavigationItemSelectedListener navigationView_selected = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -85,6 +81,10 @@ public class MainActivity extends AppCompatActivity{
             return true;
         }
     };
+
+    static final LatLng map = new LatLng(25.041350, 121.566357);
+    private GoogleMap mMap;
+
     private OnMapReadyCallback map_ready = new OnMapReadyCallback() {
         @Override
         public void onMapReady(GoogleMap googleMap) {
