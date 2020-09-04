@@ -20,12 +20,15 @@
             android:title="關於" />
     </group>
     <item
-        android:title="設定">
+        android:title="YOU">
         <menu>
             <item
                 android:title="個人資料"/>
             <item
                 android:title="修改密碼"/>
+            <item
+                android:id="@+id/logout"
+                android:title="登出"/>
         </menu>
     </item>
 

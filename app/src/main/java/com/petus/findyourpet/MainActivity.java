@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,12 +24,37 @@ import com.google.android.material.navigation.NavigationView;
 
 
 public class MainActivity extends AppCompatActivity{
+
+    private boolean logon;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        logon = getSharedPreferences(CDictionary.LOGIN,MODE_PRIVATE)
+                .getBoolean(CDictionary.LOGON,false);
+
+        if(!logon) {
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivityForResult(intent,CDictionary.REQUEST_LOGIN);
+        }
+
+        ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(map_ready);
+
+        InitialComponent();
+
+        navigationView.setNavigationItemSelectedListener(navigationView_selected);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        actionBarDrawerToggle.syncState();//初始化狀態
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+    }
+
+
     static final LatLng map = new LatLng(25.041350, 121.566357);
     private GoogleMap mMap;
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-    private NavigationView navigationView;
+
     private NavigationView.OnNavigationItemSelectedListener navigationView_selected = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -42,7 +69,15 @@ public class MainActivity extends AppCompatActivity{
                     Toast.makeText(MainActivity.this,"使用說明",Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.action_settings:
-                    Toast.makeText(MainActivity.this,"設定",Toast.LENGTH_SHORT).show();
+                    Intent intent_setting = new Intent(MainActivity.this,SettingActivity.class);
+                    intent_setting.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent_setting);
+                    break;
+                case R.id.logout:
+                    SharedPreferences sharedPreferences = getSharedPreferences(CDictionary.LOGIN,MODE_PRIVATE);
+                    sharedPreferences.edit().putBoolean(CDictionary.LOGON,false).commit();
+                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                    startActivity(intent);
                     break;
             }
             menuItem.setChecked(true);//點選了把它設為選中狀態
@@ -50,7 +85,6 @@ public class MainActivity extends AppCompatActivity{
             return true;
         }
     };
-
     private OnMapReadyCallback map_ready = new OnMapReadyCallback() {
         @Override
         public void onMapReady(GoogleMap googleMap) {
@@ -64,7 +98,6 @@ public class MainActivity extends AppCompatActivity{
             setMapStyle();
         }
     };
-
     private void setMapStyle() {
         MapStyleOptions style = new MapStyleOptions(
                 "[" +
@@ -92,23 +125,15 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.e("Error","onViewCreate");
-        setContentView(R.layout.activity_main);
-        Log.e("Error","onCreate");
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private NavigationView navigationView;
 
-        ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(map_ready);
-
+    private void InitialComponent() {
         navigationView = findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(navigationView_selected);
         toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        actionBarDrawerToggle.syncState();//初始化狀態
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-
     }
+
 }

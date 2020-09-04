@@ -10,4 +10,10 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="text_account">帳號</string>
+    <string name="text_password">密碼</string>
+    <string name="remember_password">記住密碼</string>
+    <string name="action_login">登入</string>
+    <string name="forget_password">忘記密碼</string>
+    <string name="action_register">註冊</string>
 </resources>
